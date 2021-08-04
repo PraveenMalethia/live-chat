@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="section no-pad-bot">
+  <div class="container">
+    <h4>Messages
+      {% if thread.user1 == request.user %}
+      : {{thread.user2}}
+      {% else %}
+      : {{thread.user1}}
+      {% endif %}
+    </h4>
+    <ul class="collection" id="messages">
+      {% for message in messages %}
+      <li class="collection-item">
+        {% if message.sender == request.user %}
+        <span class="green-text">{{message.sender}}</span>
+        {% else %}
+        <span class="red-text">{{message.sender}}</span>
+        {% endif %}
+        : {{message.message}}
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="row">
+      <form id="form" class="col s12" method="post" action="."> {% csrf_token %}
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea id="textarea1" class="materialize-textarea" name="message"></textarea>
+            <label for="textarea1">Message</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-large green waves-effect waves-dark">send</button>
+        <a href="." class="btn btn-large blue waves-effect waves-dark">Refresh</a>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- script tag with form prevent submit -->
+<script type="text/javascript">
+  (function ($) {
+    $(function () {
+      var formData = $('#form')
+      var loc = window.location
+      var msgInput = $('#textarea1')
+      var chatHolder = $('#messages')
+      var user = '{{request.user}}'
+      var wsStart = 'ws://'
+      if (loc.protocol == 'https:') {
+        wsStart = 'wss://'
+      }
+      var endpoint = wsStart + loc.host + loc.pathname
+      var socket = new WebSocket(endpoint)
+      socket.onopen = function (e) {
+        formData.submit(function (event) {
+          var msgText = msgInput.val()
+          var finalData = {
+            'message': msgText
+          }
+          event.preventDefault()
+          socket.send(JSON.stringify(finalData))
+          msgInput.val('')
+        })
+      }
+      socket.onmessage = function (event) {
+        var data = JSON.parse(event.data)
+        data = JSON.parse(data.text)
+        chatHolder.append(`<li class="collection-item">
+      <span class="${data.user == user ? 'green-text' : 'red-text'}">${data.user}</span> : `
+          + data.message + '</li>')
+      }
+      socket.onerror = function (error) {
+        console.log("Error : ", error)
+      }
+      socket.onclose = function (event) {
+        console.log("Closed : ", event)
+      }
+    });
+  })(jQuery);
+</script>
+
+{% endblock content %}
