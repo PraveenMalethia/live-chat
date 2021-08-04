@@ -1,7 +1,5 @@
 import json
-from django.contrib.auth.models import User
-from channels.generic.websocket import WebsocketConsumer , AsyncJsonWebsocketConsumer
-from channels.consumer import AsyncConsumer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import Thread, Message
 
