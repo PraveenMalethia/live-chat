@@ -9,7 +9,7 @@
       : {{thread.user1}}
       {% endif %}
     </h4>
-    <ul class="collection" id="messages">
+    <ul class="collection" style="overflow:scroll; height:400px;" id="messages">
       {% for message in messages %}
       <li class="collection-item">
         {% if message.sender == request.user %}
