@@ -1,40 +1,88 @@
 {% extends "base.html" %}
-{% block content %}
+{% block content %}{% load humanize %}
 <div class="section no-pad-bot">
   <div class="container">
-    <h4>Messages
+    <h4 class="center">Messages
       {% if thread.user1 == request.user %}
       : {{thread.user2}}
       {% else %}
       : {{thread.user1}}
       {% endif %}
     </h4>
-    <ul class="collection" style="overflow:scroll; height:400px;" id="messages">
+    <ul class="collection" id="messages">
       {% for message in messages %}
-      <li class="collection-item">
+      <li class="collection-item collectionitem" style="background-color:#334756">
         {% if message.sender == request.user %}
         <span class="green-text">{{message.sender}}</span>
         {% else %}
         <span class="red-text">{{message.sender}}</span>
         {% endif %}
-        : {{message.message}}
+        : <span>{{message.message}}</span>
+        <small class="secondary-content white-text">{{message.timestamp|naturaltime}}</small>
       </li>
       {% endfor %}
     </ul>
     <div class="row">
       <form id="form" class="col s12" method="post" action="."> {% csrf_token %}
         <div class="row">
-          <div class="input-field col s12">
-            <textarea id="textarea1" class="materialize-textarea" name="message"></textarea>
-            <label for="textarea1">Message</label>
+          <div class="input-field col s8">
+            <input id="textarea1" class="input-field white-text" placeholder="Message" name="message" autocomplete="off"></input>
           </div>
+          <button type="submit" class="btn btn-large green waves-effect waves-dark">send</button>
         </div>
-        <button type="submit" class="btn btn-large green waves-effect waves-dark">send</button>
-        <a href="." class="btn btn-large blue waves-effect waves-dark">Refresh</a>
+        <a href="." class="col s12 btn btn-large blue waves-effect waves-dark">Refresh</a>
       </form>
     </div>
   </div>
+  <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 </div>
+
+<style>
+  #messages {
+    height: 400px;
+    overflow: scroll;
+    overflow: auto;
+  }
+</style>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <!-- script tag with form prevent submit -->
 <script type="text/javascript">
@@ -49,6 +97,8 @@
       if (loc.protocol == 'https:') {
         wsStart = 'wss://'
       }
+      var elem = document.getElementById('messages');
+      elem.scrollTop = elem.scrollHeight;
       var endpoint = wsStart + loc.host + loc.pathname
       var socket = new WebSocket(endpoint)
       socket.onopen = function (e) {
@@ -58,16 +108,25 @@
             'message': msgText
           }
           event.preventDefault()
+          if (msgText.length > 0) {
           socket.send(JSON.stringify(finalData))
+          }
+          else{
+            return
+          }
           msgInput.val('')
+          var elem = document.getElementById('messages');
+          elem.scrollTop = elem.scrollHeight;
         })
       }
       socket.onmessage = function (event) {
         var data = JSON.parse(event.data)
         data = JSON.parse(data.text)
-        chatHolder.append(`<li class="collection-item">
+        chatHolder.append(`<li class="collection-item" style="background-color:#334756">
       <span class="${data.user == user ? 'green-text' : 'red-text'}">${data.user}</span> : `
-          + data.message + '</li>')
+          + data.message + ' <small class="secondary-content white-text">just now</small> </li>')
+          var elem = document.getElementById('messages');
+          elem.scrollTop = elem.scrollHeight;
       }
       socket.onerror = function (error) {
         console.log("Error : ", error)

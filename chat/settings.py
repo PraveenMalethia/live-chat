@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'channels',
     'app',
 ]
@@ -74,6 +75,7 @@ WSGI_APPLICATION = 'chat.wsgi.application'
 
 ASGI_APPLICATION = 'chat.asgi.application'
 
+LOGIN_REDIRECT_URL = '/'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
