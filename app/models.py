@@ -14,7 +14,8 @@ class UserProfile(models.Model):
 class Thread(models.Model):
     user1 = models.ForeignKey(User,on_delete=models.CASCADE, related_name='user1')
     user2 = models.ForeignKey(User,on_delete=models.CASCADE, related_name='user2')
-    # add a string field to the model
+    last_message = models.CharField(max_length=200,default="")
+
 
 class Message(models.Model):
     thread = models.ForeignKey(Thread,on_delete=models.CASCADE, related_name='thread')

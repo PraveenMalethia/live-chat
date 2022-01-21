@@ -2,31 +2,19 @@
 {% block content %}
 
 <div class="section no-pad-bot" id="index-banner">
-  <div class="container" >
+  <div class="container">
     <br><br>
-    <ul class="collection with-header" >
+    <ul class="collection with-header">
       <li class="collection-header white-text" style="background-color:#334756">
-        <h4 >Inbox</h4>
+        <h4>Inbox</h4>
       </li>
       {% for thread in threads %}
       <a href="{% url 'detail' thread.id %}" class="collection-item white-text" style="background-color:#334756">
         {% if thread.user1 == request.user %}
-        
-        {% if thread.user1.userprofile.is_online %}
-          <span class="green-text">Online</span>
-          {% else %}
-          <span class="red-text">Offline</span>
+        <b>{{thread.user2|upper}}</b> : {{thread.last_message}}
+        {% else %}
+        <b>{{thread.user1|upper}}</b> : {{thread.last_message}}
         {% endif %}
-          
-          {{thread.user2}}
-          {% else %}
-          {% if thread.user1.userprofile.is_online %}
-          <span class="green-text">Online</span>
-          {% else %}
-          <span class="red-text">Offline</span>
-        {% endif %}
-          {{thread.user1}}
-          {% endif %}
       </a>
       {% endfor %}
     </ul>

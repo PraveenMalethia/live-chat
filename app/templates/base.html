@@ -27,45 +27,6 @@
   <script src="{% static 'js/materialize.js' %}"></script>
   <script src="{% static 'js/init.js' %}"></script>
 
-  <script type="text/javascript">
-    (function ($) {
-      $(function () {
-        var loc = window.location
-        var chatHolder = $('#messages')
-        var user = '{{request.user}}'
-        var wsStart = 'ws://'
-        if (loc.protocol == 'https:') {
-          wsStart = 'wss://'
-        }
-        var endpoint = wsStart + loc.host + loc.pathname
-        var socket = new WebSocket(endpoint)
-        socket.onopen = function (e) {
-          var finalData = {
-            'message': 'Online'
-          }
-          socket.send(JSON.stringify(finalData))
-        }
-        socket.onerror = function (error) {
-          var finalData = {
-            'message': 'Offline'
-          }
-          socket.send(JSON.stringify(finalData))
-        }
-        socket.onmessage = function (event) {
-        var data = JSON.parse(event.data)
-        data = JSON.parse(data.text)
-        
-      }
-        socket.onclose = function (event) {
-          var finalData = {
-            'message': 'Offline'
-          }
-          socket.send(JSON.stringify(finalData))
-        }
-      });
-    })(jQuery);
-  </script>
-
 </body>
 
 </html>

@@ -26,7 +26,8 @@
       <form id="form" class="col s12" method="post" action="."> {% csrf_token %}
         <div class="row">
           <div class="input-field col s8">
-            <input id="textarea1" class="input-field white-text" placeholder="Message" name="message" autocomplete="off"></input>
+            <input id="textarea1" class="input-field white-text" placeholder="Message" name="message"
+              autocomplete="off"></input>
           </div>
           <button type="submit" class="btn btn-large green waves-effect waves-dark">send</button>
         </div>
@@ -35,45 +36,45 @@
     </div>
   </div>
   <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
 </div>
 
 <style>
@@ -109,9 +110,9 @@
           }
           event.preventDefault()
           if (msgText.length > 0) {
-          socket.send(JSON.stringify(finalData))
+            socket.send(JSON.stringify(finalData))
           }
-          else{
+          else {
             return
           }
           msgInput.val('')
@@ -122,11 +123,12 @@
       socket.onmessage = function (event) {
         var data = JSON.parse(event.data)
         data = JSON.parse(data.text)
+        console.log(data)
         chatHolder.append(`<li class="collection-item" style="background-color:#334756">
       <span class="${data.user == user ? 'green-text' : 'red-text'}">${data.user}</span> : `
           + data.message + ' <small class="secondary-content white-text">just now</small> </li>')
-          var elem = document.getElementById('messages');
-          elem.scrollTop = elem.scrollHeight;
+        var elem = document.getElementById('messages');
+        elem.scrollTop = elem.scrollHeight;
       }
       socket.onerror = function (error) {
         console.log("Error : ", error)
